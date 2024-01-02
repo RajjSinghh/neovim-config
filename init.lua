@@ -64,6 +64,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
+
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -71,8 +72,18 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
-  -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      vim.keymap.set("n", "<leader>f", ":Neotree toggle<CR>", {})
+      end,
+  },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -94,6 +105,10 @@ require('lazy').setup({
   },
 
   {
+    -- Haskell highlighting
+    'neovimhaskell/haskell-vim',
+  },
+    {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
@@ -151,11 +166,11 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    'catppuccin/neovim',
+    name = "catppuccin",
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
 
@@ -165,22 +180,14 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
-        theme = 'onedark',
+        icons_enabled = true,
+        theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
       },
     },
   },
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    main = 'ibl',
-    opts = {},
-  },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
@@ -241,7 +248,7 @@ vim.o.hlsearch = false
 vim.wo.number = true
 
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = ""
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -253,10 +260,6 @@ vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true
-
--- Case-insensitive searching UNLESS \C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
 
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
@@ -320,9 +323,9 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>ts', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>pv', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
@@ -560,5 +563,35 @@ cmp.setup {
   },
 }
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+vim.opt.relativenumber = true
+vim.opt.expandtab = true
+vim.opt.smartindent = true
+vim.opt.incsearch = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.number = true
+vim.opt.shiftwidth = 4
+vim.opt.showmode = false
+vim.opt.laststatus = 2
+
+
+
+vim.keymap.set("n", "<Up>", "<Nop>")
+vim.keymap.set("n", "<Down>", "<Nop>")
+vim.keymap.set("n", "<Left>", "<Nop>")
+vim.keymap.set("n", "<Right>", "<Nop>")
+
+vim.keymap.set("n", "<leader>h", ":wincmd h<CR>")
+vim.keymap.set("n", "<leader>j", ":wincmd j<CR>")
+vim.keymap.set("n", "<leader>k", ":wincmd k<CR>")
+vim.keymap.set("n", "<leader>l", ":wincmd l<CR>")
+
+vim.cmd "filetype plugin indent on"
+
+vim.cmd'colorscheme catppuccin-mocha'
+
+vim.opt.path = vim.opt.path + "**"
+
+
+
+-- Tme line beneath this is called `modeline`. See `:help modeline`
