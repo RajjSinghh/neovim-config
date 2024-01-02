@@ -1,3 +1,6 @@
+# NOTE
+This config used kickstart as a base but has since had other tools added to it. Most of this README is out of date.
+
 # kickstart.nvim
 
 https://github.com/kdheepak/kickstart.nvim/assets/1813121/f3ff9a2b-c31f-44df-a4fa-8a0d7b17cf7b
